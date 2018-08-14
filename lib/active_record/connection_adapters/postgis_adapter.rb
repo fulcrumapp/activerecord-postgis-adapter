@@ -47,9 +47,16 @@ module ActiveRecord
       # http://postgis.17.x6.nabble.com/Default-SRID-td5001115.html
       DEFAULT_SRID = 0
 
+      # https://github.com/rails/rails/blob/4-2-stable/activerecord/lib/active_record/connection_adapters/postgresql_adapter.rb#L226-L254
       def initialize(*args)
         super
+
         @visitor = Arel::Visitors::PostGIS.new(self)
+        if self.class.type_cast_config_to_boolean(config.fetch(:prepared_statements) { true })
+          @prepared_statements = true
+        else
+          @prepared_statements = false
+        end
       end
 
       def adapter_name
