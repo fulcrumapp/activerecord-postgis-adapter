@@ -48,7 +48,7 @@ module ActiveRecord
       DEFAULT_SRID = 0
 
       # https://github.com/rails/rails/blob/4-2-stable/activerecord/lib/active_record/connection_adapters/postgresql_adapter.rb#L226-L254
-      def initialize(*args)
+      def initialize(connection, logger, connection_parameters, config) # *args
         super
 
         @visitor = Arel::Visitors::PostGIS.new(self)
